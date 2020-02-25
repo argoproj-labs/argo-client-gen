@@ -1,6 +1,10 @@
 GIT_ORG    := argoproj
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref=loose HEAD | sed 's/heads\///')
-VERSION    := latest
+VERSION    := master
+
+# VERSION as GIT_BRANCH must be different
+ifneq ($(VERSION),$(GIT_BRANCH))
+
 SWAGGER    := https://raw.githubusercontent.com/$(GIT_ORG)/argo/$(VERSION)/api/openapi-spec/swagger.json
 
 clients: java
@@ -100,3 +104,5 @@ publish-java: test-java
 	cd java && mvn deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
 	cd java && git push origin $(GIT_BRANCH)
 	cd java && git push origin $(VERSION)
+
+endif
