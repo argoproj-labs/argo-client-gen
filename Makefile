@@ -1,6 +1,7 @@
+GIT_ORG    := argoproj
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref=loose HEAD | sed 's/heads\///')
 VERSION    := latest
-SWAGGER    := https://raw.githubusercontent.com/alexec/argo/$(GIT_BRANCH)/api/openapi-spec/swagger.json
+SWAGGER    := https://raw.githubusercontent.com/$(GIT_ORG)/argo/$(VERSION)/api/openapi-spec/swagger.json
 
 clients: java
 
@@ -76,8 +77,10 @@ java/pom.xml: dist/openapi-generator-cli.jar dist/java.swagger.json
 	cd java && sed 's/<dependencies>/<dependencies><dependency><groupId>io.kubernetes<\/groupId><artifactId>client-java<\/artifactId><version>5.0.0<\/version><\/dependency>/g' pom.xml > tmp && mv tmp pom.xml
     # I don't like these tests
 	rm -Rf java/src/test
+	cd java && mvn package -DskipTests -Dmaven.javadoc.skip
 	cd java && git add .
-	cd java && git commit -m 'Updated to $(JAVA_CLIENT_VERSION)' && git push origin $(GIT_BRANCH)
+	cd java && git commit -m 'Updated to $(JAVA_CLIENT_VERSION)'
+	git tag -f $(VERSION)
 	git add java
 
 .PHONY: java
@@ -89,9 +92,11 @@ $(JAVA_CLIENT_JAR): java/pom.xml
 .PHONY: test-java
 test-java: java
 	cd java && mvn install -Dmaven.javadoc.skip
-	eval `make env` && cd java-test && mvn versions:set -DnewVersion=$(JAVA_CLIENT_VERSION) verify
+	cd java-test && mvn versions:set -DnewVersion=$(JAVA_CLIENT_VERSION) verify
 
 .PHONY: publish-java
 publish-java: test-java
 	# https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages
 	cd java && mvn deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
+	cd java && git push origin $(GIT_BRANCH)
+	cd java && git push origin $(VERSION)
