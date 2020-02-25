@@ -13,23 +13,13 @@ To write applications using the  REST API, you do not need to implement the API 
 
 The following Kubernetes API client libraries are provided and maintained by their authors, not the Argo team.
 
-| Language | Client Library | Example/Docs |
-|-|-|
-| Golang | [apiclient.go](../pkg/apiclient/apiclient.go) | [Example](../cmd/argo/commands/submit.go)
-| Java | [argo-java-client](../argo-client-java) | [Example](java-test) |
+| Language | Client Library | Examples/Docs |
+|----------|----------------|---------------|
+| Golang   | [apiclient.go](../pkg/apiclient/apiclient.go) | [Example](../cmd/argo/commands/submit.go)
+| Java     | [argo-java-client](../argo-client-java) | [Example](java-test) |
 
-# Community-maintained client libraries
+## Community-maintained client libraries
 
-| Language | Client Library | Example/Docs |
-|-|-|
+| Language | Client Library | Examples/Docs |
+|----------|----------------|---------------|
 | Python | [argo-client-python](https://github.com/CermakM/argo-client-python) | | 
-## Java
-
-```
-cd ~/go/src/github.com/argoproj/argo
-eval $(make env)
-cd -
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-git checkout release-2.5
-make publish-java VERSION=v2.5.0 GIT_ORG=alexec  
-```
