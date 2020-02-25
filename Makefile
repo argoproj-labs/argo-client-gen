@@ -91,16 +91,16 @@ endif
 	git add java
 
 .PHONY: test-java
-test-java: test-java/target/ok
+test-java: java-test/target/ok
 
-test-java/target/ok: $(JAVA_CLIENT_JAR)
+java-test/target/ok: $(JAVA_CLIENT_JAR)
 	cd java-test && mvn versions:set -DnewVersion=$(JAVA_CLIENT_VERSION) verify
-	touch test-java/target/ok
+	touch java-test/target/ok
 
 .PHONY: publish-java
 publish-java: test-java
 	# https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages
-	cd java && mvn -X deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
+	cd java && mvn deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
 	cd java && git push origin $(GIT_BRANCH)
 ifneq ($(VERSION),HEAD)
 	cd java && git push origin $(VERSION)
