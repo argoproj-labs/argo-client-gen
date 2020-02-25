@@ -6,6 +6,7 @@
     <artifactId>argo-client-java-test</artifactId>
     <version>sdks</version>
     <dependencies>
+        <!-- https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>argo-client-java</artifactId>
