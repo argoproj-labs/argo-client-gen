@@ -1,6 +1,6 @@
 GIT_ORG    := argoproj
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref=loose HEAD | sed 's/heads\///')
-VERSION    := master
+VERSION    := HEAD
 
 # VERSION as GIT_BRANCH must be different
 ifneq ($(VERSION),$(GIT_BRANCH))
@@ -22,7 +22,7 @@ dist/openapi-generator-cli.jar:
 
 # java client
 
-ifeq ($(VERSION),latest)
+ifeq ($(VERSION),HEAD)
 JAVA_CLIENT_VERSION := 1-SNAPSHOT
 else
 JAVA_CLIENT_VERSION := $(VERSION)
@@ -33,9 +33,9 @@ dist/java.swagger.json: dist/swagger.json
 	cat dist/swagger.json | sed 's/io.argoproj.workflow.v1alpha1.//' | sed 's/io.k8s.api.core.v1.//'> dist/java.swagger.json
 
 .PHONY: java
-java: java/pom.xml
+java: $(JAVA_CLIENT_JAR)
 
-java/pom.xml: dist/openapi-generator-cli.jar dist/java.swagger.json
+$(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 	git submodule update --init java
 	cd java && git checkout -b $(GIT_BRANCH) || git checkout $(GIT_BRANCH)
 	rm -Rf java/*
@@ -81,28 +81,29 @@ java/pom.xml: dist/openapi-generator-cli.jar dist/java.swagger.json
 	cd java && sed 's/<dependencies>/<dependencies><dependency><groupId>io.kubernetes<\/groupId><artifactId>client-java<\/artifactId><version>5.0.0<\/version><\/dependency>/g' pom.xml > tmp && mv tmp pom.xml
     # I don't like these tests
 	rm -Rf java/src/test
-	cd java && mvn package -DskipTests -Dmaven.javadoc.skip
+	cd java && mvn package -Dmaven.javadoc.skip
 	cd java && git add .
-	cd java && git commit -m 'Updated to $(JAVA_CLIENT_VERSION)'
+	cd java && git diff --exit-code || git commit -m 'Updated to $(JAVA_CLIENT_VERSION)'
+ifneq ($(VERSION),HEAD)
 	git tag -f $(VERSION)
+endif
+	cd java && mvn install -DskipTests -Dmaven.javadoc.skip
 	git add java
 
-.PHONY: java
-java: $(JAVA_CLIENT_JAR)
-
-$(JAVA_CLIENT_JAR): java/pom.xml
-	cd java && mvn install -DskipTests -Dmaven.javadoc.skip
-
 .PHONY: test-java
-test-java: java
-	cd java && mvn install -Dmaven.javadoc.skip
+test-java: test-java/target/ok
+
+test-java/target/ok: $(JAVA_CLIENT_JAR)
 	cd java-test && mvn versions:set -DnewVersion=$(JAVA_CLIENT_VERSION) verify
+	touch test-java/target/ok
 
 .PHONY: publish-java
 publish-java: test-java
 	# https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages
-	cd java && mvn deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
+	cd java && mvn -X deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
 	cd java && git push origin $(GIT_BRANCH)
+ifneq ($(VERSION),HEAD)
 	cd java && git push origin $(VERSION)
+endif
 
 endif
