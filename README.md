@@ -11,7 +11,7 @@ To write applications using the  REST API, you do not need to implement the API 
 
 ## Officially-supported client libraries
 
-The following Kubernetes API client libraries are provided and maintained by their authors, not the Argo team.
+The following client libraries are officially maintained by the Argo team.
 
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
@@ -19,6 +19,8 @@ The following Kubernetes API client libraries are provided and maintained by the
 | Java     | [argo-client-java](https://github.com/argoproj-labs/argo-client-java) | [Example](java-test) |
 
 ## Community-maintained client libraries
+
+The following client libraries are provided and maintained by their authors, not the Argo team.
 
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
