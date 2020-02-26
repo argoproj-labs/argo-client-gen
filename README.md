@@ -16,10 +16,14 @@ The following Kubernetes API client libraries are provided and maintained by the
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
 | Golang   | [apiclient.go](https://github.com/argoproj/argo/blob/master/pkg/apiclient/apiclient.go) | [Example](https://github.com/argoproj/argo/blob/master/cmd/argo/commands/submit.go)
-| Java     | [argo-java-client](https://github.com/argoproj-labs/argo-client-java) | [Example](java-test) |
+| Java     | [argo-client-java](https://github.com/argoproj-labs/argo-client-java) | [Example](java-test) |
 
 ## Community-maintained client libraries
 
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
-| Python | [argo-client-python](https://github.com/CermakM/argo-client-python) | | 
+| Java     | [argo-java-client](https://github.com/argoproj-labs/argo-java-client) | |
+| Python   | [argo-client-python](https://github.com/CermakM/argo-client-python) | | 
+
+
+
