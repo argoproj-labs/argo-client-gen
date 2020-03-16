@@ -25,7 +25,7 @@ dist/openapi-generator-cli.jar:
 ifeq ($(VERSION),HEAD)
 JAVA_CLIENT_VERSION := 1-SNAPSHOT
 else
-JAVA_CLIENT_VERSION := $(VERSION)
+JAVA_CLIENT_VERSION := $(subst v,,$(VERSION))
 endif
 JAVA_CLIENT_JAR     := $(HOME)/.m2/repository/io/argoproj/workflow/argo-client-java/$(JAVA_CLIENT_VERSION)/argo-client-java-$(JAVA_CLIENT_VERSION).jar
 
