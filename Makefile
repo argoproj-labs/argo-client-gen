@@ -5,7 +5,7 @@ VERSION    := HEAD
 # VERSION as GIT_BRANCH must be different
 ifneq ($(VERSION),$(GIT_BRANCH))
 
-SWAGGER    := https://raw.githubusercontent.com/mac9416/argo/fix-parallelsteps-swagger/api/openapi-spec/swagger.json
+SWAGGER    := https://raw.githubusercontent.com/$(GIT_ORG)/argo/$(VERSION)/api/openapi-spec/swagger.json
 
 clients: java
 
