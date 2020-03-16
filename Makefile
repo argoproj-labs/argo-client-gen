@@ -83,9 +83,10 @@ $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 	rm -Rf java/src/test
 	cd java && mvn package -Dmaven.javadoc.skip
 	cd java && git add .
-	cd java && git diff --exit-code || git commit -m 'Updated to $(JAVA_CLIENT_VERSION)'
+	cd java && git commit -m 'Updated to $(JAVA_CLIENT_VERSION)'
 ifneq ($(VERSION),HEAD)
 	git tag -f $(VERSION)
+	git tag push -f origin $(VERSION)
 endif
 	cd java && mvn install -DskipTests -Dmaven.javadoc.skip
 	git add java
@@ -94,7 +95,7 @@ endif
 test-java: java-test/target/ok
 
 java-test/target/ok: $(JAVA_CLIENT_JAR)
-	cd java-test && mvn versions:set -DnewVersion=$(JAVA_CLIENT_VERSION) verify
+	cd java-test && mvn versions:set -DnewVersion=$(JAVA_CLIENT_VERSION) verify -DskipTests
 	touch java-test/target/ok
 
 .PHONY: publish-java
