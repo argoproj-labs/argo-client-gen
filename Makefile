@@ -67,6 +67,7 @@ $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 		--import-mappings ObjectMeta=io.kubernetes.client.models.V1ObjectMeta \
 		--import-mappings ObjectReference=io.kubernetes.client.models.V1ObjectReference \
 		--import-mappings PersistentVolumeClaim=io.kubernetes.client.models.V1PersistentVolumeClaim \
+		--import-mappings PodDisruptionBudgetSpec=io.kubernetes.client.models.V1beta1PodDisruptionBudgetSpec \
 		--import-mappings PodDNSConfig=io.kubernetes.client.models.V1PodDNSConfig \
 		--import-mappings PodSecurityContext=io.kubernetes.client.models.V1PodSecurityContext \
 		--import-mappings Probe=io.kubernetes.client.models.V1Probe \
