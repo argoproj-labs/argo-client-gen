@@ -36,7 +36,7 @@ dist/java.swagger.json: dist/swagger.json
 java: $(JAVA_CLIENT_JAR)
 
 $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
-	git submodule update --init java
+	git submodule update --remote --init java
 	cd java && git checkout -b $(GIT_BRANCH) || git checkout $(GIT_BRANCH)
 	rm -Rf java/*
 	java \
