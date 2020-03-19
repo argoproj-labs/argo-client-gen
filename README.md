@@ -24,8 +24,7 @@ The following client libraries are provided and maintained by their authors, not
 
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
-| Java     | [argo-java-client](https://github.com/argoproj-labs/argo-java-client) | |
-| Python   | [argo-client-python](https://github.com/CermakM/argo-client-python) | | 
+| Python   | [argo-client-python](https://github.com/argoproj-labs/argo-client-python) | | 
 
 
 
