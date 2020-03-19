@@ -77,13 +77,11 @@ $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 		--import-mappings Volume=io.kubernetes.client.models.V1Volume \
 		--import-mappings VolumeDevice=io.kubernetes.client.models.V1VolumeDevice \
 		--import-mappings VolumeMount=io.kubernetes.client.models.V1VolumeMount \
+		--generate-alias-as-model \
 	# add the io.kubernetes:java-client to the deps
 	cd java && sed 's/<dependencies>/<dependencies><dependency><groupId>io.kubernetes<\/groupId><artifactId>client-java<\/artifactId><version>5.0.0<\/version><\/dependency>/g' pom.xml > tmp && mv tmp pom.xml
     # I don't like these tests
 	rm -Rf java/src/test
-
-	# Hack to work around Java codegen's apparent lack of support for nested lists.
-	sed -i -e 's/ArrayList<List>/ArrayList<List<WorkflowStep>>/' java/src/main/java/io/argoproj/workflow/models/Template.java
 
 	cd java && mvn package -Dmaven.javadoc.skip
 	cd java && git add .
