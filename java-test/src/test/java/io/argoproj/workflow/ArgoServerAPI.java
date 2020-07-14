@@ -12,7 +12,7 @@ public class ArgoServerAPI {
   private final ApiClient client =
       new ApiClient()
           .setDebugging(true)
-          .addDefaultHeader("Authorization", "Bearer " + System.getenv("ARGO_TOKEN"));
+          .addDefaultHeader("Authorization", System.getenv("ARGO_TOKEN"));
 
   private final WorkflowServiceApi api = new WorkflowServiceApi(client);
 

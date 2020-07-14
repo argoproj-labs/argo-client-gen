@@ -19,7 +19,7 @@ public class KubeAPI {
           .setVerifyingSsl(false)
           .setDebugging(true)
           .setBasePath("https://localhost:6443")
-          .addDefaultHeader("Authorization", "Bearer " + System.getenv("ARGO_TOKEN"));
+          .addDefaultHeader("Authorization", System.getenv("ARGO_TOKEN"));
 
   public Workflow createWorkflow(Workflow wf) throws ApiException, IOException {
     Response r =

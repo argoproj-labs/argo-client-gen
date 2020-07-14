@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.argoproj.workflow</groupId>
     <artifactId>argo-client-java-test</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>v2.9.2</version>
     <dependencies>
         <!-- https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages -->
         <dependency>

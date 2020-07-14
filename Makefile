@@ -30,7 +30,7 @@ endif
 JAVA_CLIENT_JAR     := $(HOME)/.m2/repository/io/argoproj/workflow/argo-client-java/$(JAVA_CLIENT_VERSION)/argo-client-java-$(JAVA_CLIENT_VERSION).jar
 
 dist/java.swagger.json: dist/swagger.json
-	cat dist/swagger.json | sed 's/io.argoproj.workflow.v1alpha1.//' | sed 's/io.k8s.api.core.v1.//'> dist/java.swagger.json
+	cat dist/swagger.json | sed 's/io.argoproj.workflow.v1alpha1.//' | sed 's/io.k8s.api.core.v1.//' | sed 's/io.k8s.apimachinery.pkg.apis.meta.v1.//'> dist/java.swagger.json
 
 .PHONY: java
 java: $(JAVA_CLIENT_JAR)
@@ -105,7 +105,12 @@ publish-java: test-java
 	# https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages
 	cd java && mvn deploy -DskipTests -Dmaven.javadoc.skip -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/argoproj-labs/argo-client-java
 	cd java && git push origin $(GIT_BRANCH)
+	$(make) tag-java
+
+.PHONY: tag-java
+tag-java:
 ifneq ($(VERSION),HEAD)
+	cd java && git tag $(VERSION)
 	cd java && git push origin $(VERSION)
 endif
 
