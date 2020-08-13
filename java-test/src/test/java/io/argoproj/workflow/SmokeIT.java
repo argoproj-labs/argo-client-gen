@@ -41,7 +41,7 @@ public class SmokeIT {
     con.setRequestMethod("GET");
     InputStream is = con.getInputStream();
     BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
+    StringBuffer response = new StringBuffer();
     String line;
     while ((line = rd.readLine()) != null) {
       response.append(line);
