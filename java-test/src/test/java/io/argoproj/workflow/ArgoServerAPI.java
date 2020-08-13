@@ -12,6 +12,7 @@ public class ArgoServerAPI {
   private final ApiClient client =
       new ApiClient()
           .setDebugging(true)
+          .setBasePath("http://localhost:2746")
           .addDefaultHeader("Authorization", System.getenv("ARGO_TOKEN"));
 
   private final WorkflowServiceApi api = new WorkflowServiceApi(client);
