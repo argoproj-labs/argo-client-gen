@@ -83,13 +83,13 @@ $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 	cd java && sed -i 's|<dependencies>|<dependencies><dependency><groupId>io.kubernetes</groupId><artifactId>client-java</artifactId><version>9.0.2</version></dependency>|g' pom.xml
 	# implement KubernetesObject and KubernetesListObject on related classes
 	cd java/src/main/java/io/argoproj/workflow/models && \
-	  sed -i 's|class Workflow {|class Workflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "Workflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' Workflow.java && \
-	  sed -i 's|class WorkflowTemplate {|class WorkflowTemplate implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "WorkflowTemplate"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplate.java && \
-	  sed -i 's|class CronWorkflow {|class CronWorkflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "CronWorkflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' CronWorkflow.java && \
-	  sed -i 's|class WorkflowList {|class WorkflowList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "WorkflowList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowList.java && \
-	  sed -i 's|class WorkflowTemplateList {|class WorkflowTemplateList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "WorkflowTemplateList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplateList.java && \
-	  sed -i 's|class CronWorkflowList {|class CronWorkflowList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "CronWorkflowList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' CronWorkflowList.java
-  # I don't like these tests
+		sed -i 's|class Workflow {|class Workflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "Workflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' Workflow.java && \
+		sed -i 's|class WorkflowTemplate {|class WorkflowTemplate implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "WorkflowTemplate"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplate.java && \
+		sed -i 's|class CronWorkflow {|class CronWorkflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "CronWorkflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' CronWorkflow.java && \
+		sed -i 's|class WorkflowList {|class WorkflowList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "WorkflowList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowList.java && \
+		sed -i 's|class WorkflowTemplateList {|class WorkflowTemplateList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "WorkflowTemplateList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplateList.java && \
+		sed -i 's|class CronWorkflowList {|class CronWorkflowList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "CronWorkflowList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' CronWorkflowList.java
+	# I don't like these tests
 	rm -Rf java/src/test
 
 	cd java && mvn package -Dmaven.javadoc.skip
