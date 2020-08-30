@@ -54,34 +54,42 @@ $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 		--artifact-id argo-client-java \
 		--artifact-version $(JAVA_CLIENT_VERSION) \
 		--import-mappings Time=org.joda.time.DateTime \
-		--import-mappings Affinity=io.kubernetes.client.models.V1Affinity \
-		--import-mappings ConfigMapKeySelector=io.kubernetes.client.models.V1ConfigMapKeySelector \
-		--import-mappings Container=io.kubernetes.client.models.V1Container \
-		--import-mappings ContainerPort=io.kubernetes.client.models.V1ContainerPort \
-		--import-mappings EnvFromSource=io.kubernetes.client.models.V1EnvFromSource \
-		--import-mappings EnvVar=io.kubernetes.client.models.V1EnvVar \
-		--import-mappings HostAlias=io.kubernetes.client.models.V1HostAlias \
-		--import-mappings Lifecycle=io.kubernetes.client.models.V1Lifecycle \
-		--import-mappings ListMeta=io.kubernetes.client.models.V1ListMeta \
-		--import-mappings LocalObjectReference=io.kubernetes.client.models.V1LocalObjectReference \
-		--import-mappings ObjectMeta=io.kubernetes.client.models.V1ObjectMeta \
-		--import-mappings ObjectReference=io.kubernetes.client.models.V1ObjectReference \
-		--import-mappings PersistentVolumeClaim=io.kubernetes.client.models.V1PersistentVolumeClaim \
-		--import-mappings PodDisruptionBudgetSpec=io.kubernetes.client.models.V1beta1PodDisruptionBudgetSpec \
-		--import-mappings PodDNSConfig=io.kubernetes.client.models.V1PodDNSConfig \
-		--import-mappings PodSecurityContext=io.kubernetes.client.models.V1PodSecurityContext \
-		--import-mappings Probe=io.kubernetes.client.models.V1Probe \
-		--import-mappings ResourceRequirements=io.kubernetes.client.models.V1ResourceRequirements \
-		--import-mappings SecretKeySelector=io.kubernetes.client.models.V1SecretKeySelector \
-		--import-mappings SecurityContext=io.kubernetes.client.models.V1SecurityContext \
-		--import-mappings Toleration=io.kubernetes.client.models.V1Toleration \
-		--import-mappings Volume=io.kubernetes.client.models.V1Volume \
-		--import-mappings VolumeDevice=io.kubernetes.client.models.V1VolumeDevice \
-		--import-mappings VolumeMount=io.kubernetes.client.models.V1VolumeMount \
+		--import-mappings Affinity=io.kubernetes.client.openapi.models.V1Affinity \
+		--import-mappings ConfigMapKeySelector=io.kubernetes.client.openapi.models.V1ConfigMapKeySelector \
+		--import-mappings Container=io.kubernetes.client.openapi.models.V1Container \
+		--import-mappings ContainerPort=io.kubernetes.client.openapi.models.V1ContainerPort \
+		--import-mappings EnvFromSource=io.kubernetes.client.openapi.models.V1EnvFromSource \
+		--import-mappings EnvVar=io.kubernetes.client.openapi.models.V1EnvVar \
+		--import-mappings HostAlias=io.kubernetes.client.openapi.models.V1HostAlias \
+		--import-mappings Lifecycle=io.kubernetes.client.openapi.models.V1Lifecycle \
+		--import-mappings ListMeta=io.kubernetes.client.openapi.models.V1ListMeta \
+		--import-mappings LocalObjectReference=io.kubernetes.client.openapi.models.V1LocalObjectReference \
+		--import-mappings ObjectMeta=io.kubernetes.client.openapi.models.V1ObjectMeta \
+		--import-mappings ObjectReference=io.kubernetes.client.openapi.models.V1ObjectReference \
+		--import-mappings PersistentVolumeClaim=io.kubernetes.client.openapi.models.V1PersistentVolumeClaim \
+		--import-mappings PodDisruptionBudgetSpec=io.kubernetes.client.openapi.models.V1beta1PodDisruptionBudgetSpec \
+		--import-mappings PodDNSConfig=io.kubernetes.client.openapi.models.V1PodDNSConfig \
+		--import-mappings PodSecurityContext=io.kubernetes.client.openapi.models.V1PodSecurityContext \
+		--import-mappings Probe=io.kubernetes.client.openapi.models.V1Probe \
+		--import-mappings ResourceRequirements=io.kubernetes.client.openapi.models.V1ResourceRequirements \
+		--import-mappings SecretKeySelector=io.kubernetes.client.openapi.models.V1SecretKeySelector \
+		--import-mappings SecurityContext=io.kubernetes.client.openapi.models.V1SecurityContext \
+		--import-mappings Toleration=io.kubernetes.client.openapi.models.V1Toleration \
+		--import-mappings Volume=io.kubernetes.client.openapi.models.V1Volume \
+		--import-mappings VolumeDevice=io.kubernetes.client.openapi.models.V1VolumeDevice \
+		--import-mappings VolumeMount=io.kubernetes.client.openapi.models.V1VolumeMount \
 		--generate-alias-as-model \
 	# add the io.kubernetes:java-client to the deps
-	cd java && sed 's/<dependencies>/<dependencies><dependency><groupId>io.kubernetes<\/groupId><artifactId>client-java<\/artifactId><version>5.0.0<\/version><\/dependency>/g' pom.xml > tmp && mv tmp pom.xml
-    # I don't like these tests
+	cd java && sed -i 's|<dependencies>|<dependencies><dependency><groupId>io.kubernetes</groupId><artifactId>client-java</artifactId><version>9.0.2</version></dependency>|g' pom.xml
+	# implement KubernetesObject and KubernetesListObject on related classes
+	cd java/src/main/java/io/argoproj/workflow/models && \
+	  sed -i 's|class Workflow {|class Workflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "Workflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' Workflow.java && \
+	  sed -i 's|class WorkflowTemplate {|class WorkflowTemplate implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "WorkflowTemplate"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplate.java && \
+	  sed -i 's|class CronWorkflow {|class CronWorkflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "CronWorkflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' CronWorkflow.java && \
+	  sed -i 's|class WorkflowList {|class WorkflowList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "WorkflowList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowList.java && \
+	  sed -i 's|class WorkflowTemplateList {|class WorkflowTemplateList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "WorkflowTemplateList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplateList.java && \
+	  sed -i 's|class CronWorkflowList {|class CronWorkflowList implements io.kubernetes.client.common.KubernetesListObject {|g; s|private String kind|private String kind = "CronWorkflowList"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' CronWorkflowList.java
+  # I don't like these tests
 	rm -Rf java/src/test
 
 	cd java && mvn package -Dmaven.javadoc.skip
