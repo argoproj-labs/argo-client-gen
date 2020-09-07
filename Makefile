@@ -81,7 +81,8 @@ $(JAVA_CLIENT_JAR): dist/openapi-generator-cli.jar dist/java.swagger.json
 		--generate-alias-as-model \
 	# add the io.kubernetes:java-client to the deps
 	cd java && sed -i 's|<dependencies>|<dependencies><dependency><groupId>io.kubernetes</groupId><artifactId>client-java</artifactId><version>9.0.2</version></dependency>|g' pom.xml
-	# implement KubernetesObject and KubernetesListObject on related classes
+	# implement KubernetesObject and KubernetesListObject on related classes.  They extend KubernetesType, and therefore we
+	# also add implementations for apiVersion and kind (see: https://github.com/kubernetes-client/java/blob/b64ce915ad5964bebdc1d88b36dfe18b0892e574/kubernetes/src/main/java/io/kubernetes/client/common/KubernetesType.java#L22)
 	cd java/src/main/java/io/argoproj/workflow/models && \
 		sed -i 's|class Workflow {|class Workflow implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "Workflow"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' Workflow.java && \
 		sed -i 's|class WorkflowTemplate {|class WorkflowTemplate implements io.kubernetes.client.common.KubernetesObject {|g; s|private String kind|private String kind = "WorkflowTemplate"|g; s|private String apiVersion|private String apiVersion = "argoproj.io/v1alpha1"|g' WorkflowTemplate.java && \
