@@ -1,12 +1,12 @@
 package io.argoproj.workflow;
 
-import static org.junit.Assert.assertNotNull;
-
 import io.argoproj.workflow.models.Template;
 import io.argoproj.workflow.models.Workflow;
 import io.argoproj.workflow.models.WorkflowSpec;
 import io.kubernetes.client.models.V1Container;
 import io.kubernetes.client.models.V1ObjectMeta;
+import org.junit.Test;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,13 +14,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class SmokeIT {
 
   private final Workflow wf =
       new Workflow()
-          .metadata(new V1ObjectMeta().generateName("hello-world-").namespace("argo"))
+              .metadata(new V1ObjectMeta().name("my-wf"))
           .spec(
               new WorkflowSpec()
                   .entrypoint("whalesay")
@@ -36,7 +37,7 @@ public class SmokeIT {
 
   @Test
   public void testHttpRequest() throws Exception {
-    URL url = new URL("http://" + System.getenv("ARGO_SERVER") + "/api/v1/workflows/argo");
+    URL url = new URL("http://localhost:2746/api/v1/workflows/default");
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     con.setRequestMethod("GET");
     InputStream is = con.getInputStream();
