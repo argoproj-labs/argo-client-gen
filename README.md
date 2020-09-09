@@ -16,7 +16,7 @@ The following client libraries are officially maintained by the Argo team.
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
 | Golang   | [apiclient.go](https://github.com/argoproj/argo/blob/master/pkg/apiclient/apiclient.go) | [Example](https://github.com/argoproj/argo/blob/master/cmd/argo/commands/submit.go)
-| Java     | [argo-client-java](https://github.com/argoproj-labs/argo-client-java) | [Example](java-test) |
+| Java     | [argo-client-java](https://github.com/argoproj-labs/argo-client-java) | |
 
 ## Community-maintained client libraries
 

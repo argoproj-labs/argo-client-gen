@@ -1,3 +1,0 @@
-[submodule "java"]
-	path = java
-	url = git@github.com:argoproj-labs/argo-client-java.git
