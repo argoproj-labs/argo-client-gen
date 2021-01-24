@@ -24,7 +24,8 @@ The following client libraries are provided and maintained by their authors, not
 
 | Language | Client Library | Examples/Docs |
 |----------|----------------|---------------|
-| Python   | [argo-client-python](https://github.com/argoproj-labs/argo-client-python) | | 
+| Python   | [argo-client-python](https://github.com/argoproj-labs/argo-client-python) | Lower-level/API focus | 
+| Python   | [Couler](https://github.com/couler-proj/couler | Machine Learning focussed |
 
 
 
