@@ -1,3 +1,5 @@
+⚠️⚠️⚠️This repository is no longer maintained, please find your Java SDKs https://github.com/argoproj/argo-workflows/blob/master/docs/client-libraries.md ⚠️⚠️⚠️
+
 # Client Libraries
 
 This page contains an overview of the client libraries for using the Argo API from various programming languages.
