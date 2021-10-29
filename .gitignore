@@ -1,5 +1,9 @@
+# IntelliJ IDEA
 *.iml
-/.idea
+*.ipr
+*.iws
+.idea
+
 /dist
 target
 /java-test/pom.xml.versionsBackup
